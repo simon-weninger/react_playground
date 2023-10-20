@@ -1,0 +1,35 @@
+{
+  "name": "Google Analytics",
+  "constants": {
+    "constant1": {
+      "value": "const 1",
+      "overrideValues": [
+        {
+          "value": "const 1 container 1 env 1",
+          "containerId": 1,
+          "environmentId": 1
+        },
+        {
+          "value": "const 1 container 2 env 1",
+          "containerId": 2,
+          "environmentId": 1
+        }
+      ]
+    },
+    "constant2": {
+      "value": "const 2",
+      "overrideValues": [
+        {
+          "value": "const 2 container 1 env 1",
+          "containerId": 1,
+          "environmentId": 1
+        },
+        {
+          "value": "const 2 container 2 env 1",
+          "containerId": 2,
+          "environmentId": 1
+        }
+      ]
+    }
+  }
+}
