@@ -17,6 +17,7 @@
     "react-hook-form": "^7.43.7",
     "react-router-dom": "^6.9.0",
     "valtio": "^1.10.4",
+    "vite-tsconfig-paths": "^4.2.1",
     "zod": "^3.21.4"
   },
   "devDependencies": {

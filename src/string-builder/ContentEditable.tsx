@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 interface ContentEditableProps {
   text?: string;
+  style?: React.CSSProperties;
   onChange: (value: string) => void;
   className?: string;
 }
@@ -10,7 +11,7 @@ interface ContentEditableProps {
  * @param {ContentEditableProps} props
  * @return {ReactElement}
  */
-const ContentEditable = ({ text = "", onChange, className }: ContentEditableProps): JSX.Element => {
+const ContentEditable = ({ text = "", style, onChange, className }: ContentEditableProps): JSX.Element => {
   const divRef = useRef<HTMLDivElement>(null);
 
   const handleDoubleClick = () => {
@@ -39,7 +40,8 @@ const ContentEditable = ({ text = "", onChange, className }: ContentEditableProp
   return (
     <div
       ref={divRef}
-      className={`cursor-grab outline-none min-w-[8px] ${className}`}
+      className={`outline-none min-w-[8px] min-h-[24px] ${className}`}
+      style={style}
       onBlur={handleOnBlur}
       onInput={(e) => {
         if (divRef.current) {
