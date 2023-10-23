@@ -1,5 +1,6 @@
 import { useStringBuilder } from "./StringBuilderContextNew";
 import { FunctionElement, StringBuilderElement } from "./classes/AbstractElement";
+import { metaPixelBasicPayload } from "./data-mock";
 import DragElement from "./elements/DragElement";
 import DropZone from "./elements/DropZone";
 
@@ -21,6 +22,9 @@ const StringBuilder = (): JSX.Element => {
         Unselect All
       </button>
       <div className="flex flex-wrap items-center gap-y-2 p-2">
+        {metaPixelBasicPayload.map((element) => (
+          <DragElement key={element.getId() + "-drag"} element={element} disabled />
+        ))}
         {elements.map((element) => (
           <>
             <DropZone key={element.getId() + "-drop"} elementId={element.getId()} />

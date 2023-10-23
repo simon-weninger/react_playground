@@ -7,13 +7,14 @@ import Checkbox from "@assets/Checkbox.svg";
 
 interface DragElementProps {
   element: StringBuilderElement;
+  disabled?: boolean;
 }
 /**
  * The DragElement component
  * @param {DragElementProps} props
  * @return {ReactElement}
  */
-const DragElement = ({ element }: DragElementProps): JSX.Element => {
+const DragElement = ({ element, disabled = false }: DragElementProps): JSX.Element => {
   const dragElementRef = useRef<HTMLDivElement>(null);
   const [isDragged, setIsDragged] = useState(false);
   const {
@@ -54,7 +55,7 @@ const DragElement = ({ element }: DragElementProps): JSX.Element => {
 
   useEffect(() => {
     const ele = dragElementRef.current;
-    if (ele) {
+    if (ele && !disabled) {
       ele.addEventListener("dragstart", handleDragStart);
       ele.addEventListener("dragend", handleDragEnd);
       ele.addEventListener("click", handleShiftClick);
@@ -75,8 +76,8 @@ const DragElement = ({ element }: DragElementProps): JSX.Element => {
       <div
         ref={dragElementRef}
         style={{ opacity: isDragged ? 0.2 : 1 }}
-        className="flex items-center cursor-grab"
-        draggable
+        className={`flex items-center ${disabled ? "text-slate-400" : "cursor-grab"}`}
+        draggable={!disabled}
       >
         <ElementFactory element={element} />
       </div>

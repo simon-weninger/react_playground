@@ -21,8 +21,8 @@ export class AbstractElement {
     return this.label;
   }
 
-  forEachRecursive(cb: (e: AbstractElement) => void) {
-    cb(this);
+  forEachRecursive(cb: (e: StringBuilderElement) => void) {
+    throw new Error("You have to implement the method!");
   }
 
   cloneDeep(): AbstractElement {
@@ -55,6 +55,10 @@ export class TextElement extends AbstractElement {
 
   public setColor(color: string) {
     this.color = color;
+  }
+
+  forEachRecursive(cb: (e: StringBuilderElement) => void) {
+    cb(this);
   }
 
   cloneDeep() {
@@ -107,6 +111,10 @@ export class PlaceholderElement extends AbstractElement {
     return this.stringAfter;
   }
 
+  forEachRecursive(cb: (e: StringBuilderElement) => void) {
+    cb(this);
+  }
+
   cloneDeep() {
     const clone = new PlaceholderElement(this.placeholder, this.optional, this.stringBefore, this.stringAfter);
     clone.setId(this.id);
@@ -151,7 +159,7 @@ export class FunctionElement extends AbstractElement {
     this.childrenId = childrenId;
   }
 
-  forEachRecursive(cb: (e: AbstractElement) => void): void {
+  forEachRecursive(cb: (e: StringBuilderElement) => void): void {
     cb(this);
     this.children.forEach((element) => {
       cb(element);
@@ -203,7 +211,7 @@ export class ContentBlock extends AbstractElement {
     this.childrenId = childrenId;
   }
 
-  forEachRecursive(cb: (e: AbstractElement) => void): void {
+  forEachRecursive(cb: (e: StringBuilderElement) => void): void {
     cb(this);
     this.children.forEach((element) => {
       cb(element);
