@@ -11,7 +11,7 @@ const StringBuilder = (): JSX.Element => {
   } = useStringBuilder();
 
   return (
-    <>
+    <div className="ring-1 ring-gray-200 shadow m-2 rounded-md ">
       <button
         className="bg-green-400  p-1 rounded"
         onClick={() => dispatch({ type: "removeElements", elements: selected })}
@@ -33,7 +33,7 @@ const StringBuilder = (): JSX.Element => {
         ))}
         <DropZone elementId="last" />
       </div>
-    </>
+    </div>
   );
 };
 

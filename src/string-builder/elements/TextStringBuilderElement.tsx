@@ -1,5 +1,7 @@
+import { useEffect, useRef } from "react";
 import ContentEditable from "../ContentEditable";
 import { TextElement } from "../classes/AbstractElement";
+import Example from "@src/components/Menu";
 
 interface TextStringBuilderElementProps {
   element: TextElement;
@@ -10,8 +12,24 @@ interface TextStringBuilderElementProps {
  * @return {ReactElement}
  */
 const TextStringBuilderElement = ({ element }: TextStringBuilderElementProps): JSX.Element => {
+  const divRef = useRef<HTMLDivElement>(null);
+
+  const onContextMenu = (e: MouseEvent) => {
+    e.preventDefault();
+    alert("ATa");
+  };
+
+  useEffect(() => {
+    if (divRef.current) {
+      divRef.current.addEventListener("contextmenu", onContextMenu);
+      return () => {
+        divRef.current?.removeEventListener("contextmenu", onContextMenu);
+      };
+    }
+  }, []);
+
   return (
-    <div className="p-1 flex rounded bg-slate-50 border border-slate-200  ">
+    <div ref={divRef} className=" p-1 flex rounded bg-slate-50 border border-slate-200">
       <ContentEditable
         style={{ color: element.getColor() }}
         text={element.getLabel()}
@@ -19,6 +37,7 @@ const TextStringBuilderElement = ({ element }: TextStringBuilderElementProps): J
           element.setValue(value);
         }}
       />
+      <Example />
     </div>
   );
 };

@@ -40,7 +40,7 @@ const ContentEditable = ({ text = "", style, onChange, className }: ContentEdita
   return (
     <div
       ref={divRef}
-      className={`outline-none min-w-[8px] min-h-[24px] ${className}`}
+      className={`p-1 outline-none min-w-[8px] min-h-[32px] ${className}`}
       style={style}
       onBlur={handleOnBlur}
       onInput={(e) => {

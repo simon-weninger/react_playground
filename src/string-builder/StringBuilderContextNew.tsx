@@ -66,6 +66,10 @@ type Action =
       element: StringBuilderElement;
     }
   | {
+      type: "selectRange";
+      element: StringBuilderElement;
+    }
+  | {
       type: "unselectAll";
     };
 
@@ -146,6 +150,26 @@ function elementsReducer({ elements: prevElements, selected, drag }: StringBuild
       }
       return { elements: prevElements, selected: newSelected, drag };
     }
+
+    case "selectRange": {
+      const flatIds = getFlatIdArray(prevElements);
+
+      if (selected.length) {
+        const clickedElementIndex = flatIds.indexOf(action.element.getId());
+        const firstSelectedElementIndex = flatIds.indexOf(selected[0].getId());
+        let selectedIds;
+        if (clickedElementIndex > firstSelectedElementIndex) {
+          selectedIds = flatIds.slice(firstSelectedElementIndex, clickedElementIndex + 1);
+        } else {
+          selectedIds = flatIds.slice(clickedElementIndex, firstSelectedElementIndex + 1);
+        }
+        const newSelected = selectedIds.map((id) => findRecursive(id, prevElements) as StringBuilderElement);
+        return { elements: prevElements, selected: newSelected, drag };
+      } else {
+        return { elements: prevElements, selected: [action.element], drag };
+      }
+    }
+
     case "unselectAll": {
       return { elements: prevElements, selected: [], drag };
     }
@@ -228,5 +252,31 @@ function elementsReducer({ elements: prevElements, selected, drag }: StringBuild
       });
     }
     element.setId(generateId());
+  }
+
+  function findRecursive(id: string, elements: StringBuilderElement[]) {
+    let foundElement: StringBuilderElement | undefined;
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i];
+      element.forEachRecursive((e) => {
+        if (e.getId() === id) {
+          foundElement = e;
+        }
+      });
+      if (foundElement) return foundElement;
+    }
+    return undefined;
+  }
+
+  function getFlatIdArray(elements: StringBuilderElement[]) {
+    const arr: string[] = [];
+
+    elements.forEach((element) => {
+      element.forEachRecursive((e) => {
+        arr.push(e.getId());
+      });
+    });
+
+    return arr;
   }
 }

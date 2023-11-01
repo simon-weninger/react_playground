@@ -22,9 +22,13 @@ const DragElement = ({ element, disabled = false }: DragElementProps): JSX.Eleme
     dispatch,
   } = useStringBuilder();
 
-  const handleShiftClick = (e: MouseEvent) => {
-    if (e.shiftKey) {
+  const handleClick = (e: MouseEvent) => {
+    if (e.ctrlKey) {
       dispatch({ type: "toggleInSelected", element });
+      e.stopPropagation();
+    }
+    if (e.shiftKey) {
+      dispatch({ type: "selectRange", element });
       e.stopPropagation();
     }
   };
@@ -58,12 +62,12 @@ const DragElement = ({ element, disabled = false }: DragElementProps): JSX.Eleme
     if (ele && !disabled) {
       ele.addEventListener("dragstart", handleDragStart);
       ele.addEventListener("dragend", handleDragEnd);
-      ele.addEventListener("click", handleShiftClick);
+      ele.addEventListener("click", handleClick);
 
       return () => {
         ele.removeEventListener("dragstart", handleDragStart);
         ele.removeEventListener("dragend", handleDragEnd);
-        ele.removeEventListener("click", handleShiftClick);
+        ele.removeEventListener("click", handleClick);
       };
     }
   }, [element, selected]);
@@ -76,7 +80,7 @@ const DragElement = ({ element, disabled = false }: DragElementProps): JSX.Eleme
       <div
         ref={dragElementRef}
         style={{ opacity: isDragged ? 0.2 : 1 }}
-        className={`flex items-center ${disabled ? "text-slate-400" : "cursor-grab"}`}
+        className={`flex items-center ${disabled ? "text-gray-400" : "cursor-grab text-gray-800"}`}
         draggable={!disabled}
       >
         <ElementFactory element={element} />

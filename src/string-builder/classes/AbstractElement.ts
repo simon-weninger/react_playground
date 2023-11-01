@@ -162,7 +162,7 @@ export class FunctionElement extends AbstractElement {
   forEachRecursive(cb: (e: StringBuilderElement) => void): void {
     cb(this);
     this.children.forEach((element) => {
-      cb(element);
+      element.forEachRecursive(cb);
     });
   }
 
@@ -180,8 +180,8 @@ export class ContentBlock extends AbstractElement {
   private children: StringBuilderElement[];
   private color?: string;
 
-  constructor(contentLabel: string, children?: StringBuilderElement[], color?: string) {
-    super(contentLabel);
+  constructor(children?: StringBuilderElement[], color?: string) {
+    super("Content Block");
     this.childrenId = generateId();
     this.children = children || [];
     this.color = color;
@@ -214,13 +214,13 @@ export class ContentBlock extends AbstractElement {
   forEachRecursive(cb: (e: StringBuilderElement) => void): void {
     cb(this);
     this.children.forEach((element) => {
-      cb(element);
+      element.forEachRecursive(cb);
     });
   }
 
   cloneDeep(): ContentBlock {
     const clonedChildren = this.children.map((child) => child.cloneDeep());
-    const clone = new ContentBlock(this.label, clonedChildren, this.color);
+    const clone = new ContentBlock(clonedChildren, this.color);
     clone.setId(this.id);
     clone.setChildrenId(this.childrenId);
     return clone;

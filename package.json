@@ -1,8 +1,8 @@
 {
   "name": "reactplayground",
   "private": true,
-  "version": "0.0.1",
-  "homepage": "https://simon-weninger.github.io/react_playground",
+  "version": "0.0.2",
+  "homepage": "https://simon-weninger.github.io/react_playground/",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,6 +12,8 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
     "@hookform/resolvers": "^3.0.0",
     "mobx": "^6.8.0",
     "mobx-react-lite": "^3.4.3",

@@ -10,16 +10,15 @@ interface PlaceholderStringBuilderElementProps {
  * @return {ReactElement}
  */
 const PlaceholderStringBuilderElement = ({ element }: PlaceholderStringBuilderElementProps): JSX.Element => {
-  let wrapperColorStyles = "border-sky-300 bg-sky-50";
-  let placeholderColorStyles = "bg-sky-600 text-white";
+  let wrapperColorStyles = "border-sky-50 bg-sky-50";
+  let placeholderColorStyles = "bg-sky-200";
 
   if (element.getOptional()) {
-    wrapperColorStyles = "border-dashed border-sky-800 bg-sky-50";
-    placeholderColorStyles = "bg-sky-200 text-sky-950";
+    wrapperColorStyles = "border-sky-400 bg-sky-50";
   }
 
   return (
-    <div className={"flex items-center border  p-1 rounded " + wrapperColorStyles}>
+    <div className={"flex items-center border-l-2 border-r-2 p-1 rounded text-sky-950 " + wrapperColorStyles}>
       <ContentEditable
         className="pr-1"
         text={element.getStringBefore()}
