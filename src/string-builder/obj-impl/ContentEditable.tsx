@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { usePixelBuilder } from "./PixelBuilderContext";
 
 interface ContentEditableProps {
+  elementId: string;
   text?: string;
   style?: React.CSSProperties;
   onChange: (value: string) => void;
+  onBlur?: () => void;
   className?: string;
 }
 /**
@@ -11,20 +14,31 @@ interface ContentEditableProps {
  * @param {ContentEditableProps} props
  * @return {ReactElement}
  */
-const ContentEditable = ({ text = "", style, onChange, className }: ContentEditableProps): JSX.Element => {
+const ContentEditable = ({
+  elementId,
+  text = "",
+  style,
+  onChange,
+  onBlur,
+  className,
+}: ContentEditableProps): JSX.Element => {
   const divRef = useRef<HTMLDivElement>(null);
+  const { dispatch } = usePixelBuilder();
 
   const handleDoubleClick = () => {
     if (divRef.current) {
       divRef.current.contentEditable = "true";
       divRef.current.focus();
       divRef.current.style.cursor = "text";
+      dispatch({ type: "textChangeStart" });
     }
   };
+
   const handleOnBlur = () => {
     if (divRef.current) {
       divRef.current.contentEditable = "false";
       divRef.current.style.cursor = "";
+      dispatch({ type: "textChangeEnd", elementId });
     }
   };
 

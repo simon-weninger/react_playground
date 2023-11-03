@@ -1,4 +1,4 @@
-import { generateId } from "../utils";
+import { generateId } from "../../utils";
 
 export class AbstractElement {
   protected id: string;
@@ -126,12 +126,22 @@ export class FunctionElement extends AbstractElement {
   private childrenId: string;
   private children: StringBuilderElement[];
   private functionId: string;
+  private stringBefore: string;
+  private stringAfter: string;
 
-  constructor(functionId: string, functionLabel: string, children?: StringBuilderElement[]) {
+  constructor(
+    functionId: string,
+    functionLabel: string,
+    stringBefore: string,
+    stringAfter: string,
+    children?: StringBuilderElement[]
+  ) {
     super(functionLabel);
     this.functionId = functionId;
     this.childrenId = generateId();
     this.children = children || [];
+    this.stringBefore = stringBefore || "";
+    this.stringAfter = stringAfter || "";
   }
 
   changeFunction(functionId: string, functionLabel: string) {
@@ -155,6 +165,22 @@ export class FunctionElement extends AbstractElement {
     return this.functionId;
   }
 
+  setStringBefore(str: string) {
+    this.stringBefore = str;
+  }
+
+  getStringBefore() {
+    return this.stringBefore;
+  }
+
+  setStringAfter(str: string) {
+    this.stringAfter = str;
+  }
+
+  getStringAfter() {
+    return this.stringAfter;
+  }
+
   setChildrenId(childrenId: string) {
     this.childrenId = childrenId;
   }
@@ -168,7 +194,7 @@ export class FunctionElement extends AbstractElement {
 
   cloneDeep(): FunctionElement {
     const clonedChildren = this.children.map((child) => child.cloneDeep());
-    const clone = new FunctionElement(this.functionId, this.label, clonedChildren);
+    const clone = new FunctionElement(this.functionId, this.label, this.stringBefore, this.stringAfter, clonedChildren);
     clone.setId(this.id);
     clone.setChildrenId(this.childrenId);
     return clone;

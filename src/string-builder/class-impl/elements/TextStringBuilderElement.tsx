@@ -16,7 +16,7 @@ const TextStringBuilderElement = ({ element }: TextStringBuilderElementProps): J
 
   const onContextMenu = (e: MouseEvent) => {
     e.preventDefault();
-    alert("ATa");
+    alert("TODO");
   };
 
   useEffect(() => {
@@ -31,6 +31,7 @@ const TextStringBuilderElement = ({ element }: TextStringBuilderElementProps): J
   return (
     <div ref={divRef} className=" p-1 flex rounded bg-slate-50 border border-slate-200">
       <ContentEditable
+        elementId={element.getId()}
         style={{ color: element.getColor() }}
         text={element.getLabel()}
         onChange={(value: string) => {

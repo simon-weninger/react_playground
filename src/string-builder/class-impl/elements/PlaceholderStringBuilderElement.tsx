@@ -1,4 +1,5 @@
 import ContentEditable from "../ContentEditable";
+import { useStringBuilderClass } from "../StringBuilderContextClass";
 import { PlaceholderElement, StringBuilderElement } from "../classes/AbstractElement";
 
 interface PlaceholderStringBuilderElementProps {
@@ -10,6 +11,7 @@ interface PlaceholderStringBuilderElementProps {
  * @return {ReactElement}
  */
 const PlaceholderStringBuilderElement = ({ element }: PlaceholderStringBuilderElementProps): JSX.Element => {
+  const { dispatch } = useStringBuilderClass();
   let wrapperColorStyles = "border-sky-50 bg-sky-50";
   let placeholderColorStyles = "bg-sky-200";
 
@@ -20,13 +22,14 @@ const PlaceholderStringBuilderElement = ({ element }: PlaceholderStringBuilderEl
   return (
     <div className={"flex items-center border-l-2 border-r-2 p-1 rounded text-sky-950 " + wrapperColorStyles}>
       <ContentEditable
+        elementId={element.getId()}
         className="pr-1"
         text={element.getStringBefore()}
         onChange={(value: string) => element.setStringBefore(value)}
       />
       <div className={"py-1 px-2 rounded " + placeholderColorStyles}>{element.getLabel()}</div>
-      {/* <PlaceholderStringBuilderElement element={element} /> */}
       <ContentEditable
+        elementId={element.getId()}
         className="pl-1"
         text={element.getStringAfter()}
         onChange={(value: string) => element.setStringAfter(value)}

@@ -1,12 +1,12 @@
-import { useRef, useState, useEffect } from "react";
-import { useStringBuilder } from "../StringBuilderContextNew";
-import { StringBuilderElement } from "../classes/AbstractElement";
-import ElementFactory from "./ElementFactory";
+import { useEffect, useRef, useState } from "react";
 
 import Checkbox from "@assets/Checkbox.svg";
+import { usePixelBuilder } from "../PixelBuilderContext";
+import { PixelBuilderElement } from "../types";
+import PixelBuilderJSXElementFactory from "./PixelBuilderJSXElementFactory";
 
 interface DragElementProps {
-  element: StringBuilderElement;
+  element: PixelBuilderElement;
   disabled?: boolean;
 }
 /**
@@ -20,7 +20,7 @@ const DragElement = ({ element, disabled = false }: DragElementProps): JSX.Eleme
   const {
     context: { selected, drag },
     dispatch,
-  } = useStringBuilder();
+  } = usePixelBuilder();
 
   const handleClick = (e: MouseEvent) => {
     if (e.ctrlKey) {
@@ -31,12 +31,15 @@ const DragElement = ({ element, disabled = false }: DragElementProps): JSX.Eleme
       dispatch({ type: "selectRange", element });
       e.stopPropagation();
     }
+    if (selected.length > 0 && !e.shiftKey && !e.ctrlKey) {
+      dispatch({ type: "unselectAll" });
+    }
   };
 
   const handleDragStart = (e: DragEvent) => {
     e.stopPropagation();
     const elementClientWidth = dragElementRef.current?.clientWidth || 100;
-    if (selected.find((selectedElement) => selectedElement.getId() === element.getId())) {
+    if (selected.find((selectedElement) => selectedElement.id === element.id)) {
       dispatch({ type: "dragStart", elements: selected, elementClientWidth });
     } else {
       dispatch({ type: "dragStart", elements: [element], elementClientWidth });
@@ -50,7 +53,7 @@ const DragElement = ({ element, disabled = false }: DragElementProps): JSX.Eleme
   };
 
   useEffect(() => {
-    if (drag.elements.find((e) => e.getId() === element.getId())) {
+    if (drag.elements.find((e) => e.id === element.id)) {
       setTimeout(() => setIsDragged(true));
     } else {
       setTimeout(() => setIsDragged(false));
@@ -74,7 +77,7 @@ const DragElement = ({ element, disabled = false }: DragElementProps): JSX.Eleme
 
   return (
     <div className="relative">
-      {selected.find((selectedElement) => selectedElement.getId() === element.getId()) && (
+      {selected.find((selectedElement) => selectedElement.id === element.id) && (
         <img className="absolute top-0 left-0 w-4 -translate-x-1/2 -translate-y-1/2" src={Checkbox} />
       )}
       <div
@@ -83,7 +86,7 @@ const DragElement = ({ element, disabled = false }: DragElementProps): JSX.Eleme
         className={`flex items-center ${disabled ? "text-gray-400" : "cursor-grab text-gray-800"}`}
         draggable={!disabled}
       >
-        <ElementFactory element={element} />
+        <PixelBuilderJSXElementFactory element={element} />
       </div>
     </div>
   );

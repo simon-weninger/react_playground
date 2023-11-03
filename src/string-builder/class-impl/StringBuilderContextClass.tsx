@@ -1,9 +1,10 @@
-import { createContext, useContext, useReducer } from "react";
-import { FunctionElement, StringBuilderElement, isRecursiveElement } from "./classes/AbstractElement";
-import { generateArrayNew, metaPixelPayload } from "./data-mock";
-import { generateId } from "./utils";
+import { Children, createContext, useContext, useReducer } from "react";
+import { ContentBlock, StringBuilderElement, TextElement, isRecursiveElement } from "./classes/AbstractElement";
+import { metaPixelPayload } from "./data-mock";
+import { generateId } from "../utils";
 
-type StringBuilderContext = {
+type StringBuilderContextClass = {
+  history: StringBuilderElement[][];
   elements: StringBuilderElement[];
   selected: StringBuilderElement[];
   drag: {
@@ -12,26 +13,29 @@ type StringBuilderContext = {
   };
 };
 
-export const StringBuilderContext = createContext<{
-  context: StringBuilderContext;
+export const StringBuilderContextClass = createContext<{
+  context: StringBuilderContextClass;
   dispatch: React.Dispatch<Action>;
 }>({
-  context: { elements: [], selected: [], drag: { elements: [], clientWidth: 0 } },
+  context: { history: [], elements: [], selected: [], drag: { elements: [], clientWidth: 0 } },
   dispatch: () => {},
 });
 
-export function useStringBuilder() {
-  return useContext(StringBuilderContext);
+export function useStringBuilderClass() {
+  return useContext(StringBuilderContextClass);
 }
 
-export function StringBuilderContextProvider({ children }: { children: React.ReactNode }) {
+export function StringBuilderContextClassProvider({ children }: { children: React.ReactNode }) {
   const [context, dispatch] = useReducer(elementsReducer, {
+    history: [],
     elements: metaPixelPayload,
     selected: [],
     drag: { elements: [], clientWidth: 0 },
   });
 
-  return <StringBuilderContext.Provider value={{ context, dispatch }}>{children}</StringBuilderContext.Provider>;
+  return (
+    <StringBuilderContextClass.Provider value={{ context, dispatch }}>{children}</StringBuilderContextClass.Provider>
+  );
 }
 
 type Action =
@@ -39,6 +43,16 @@ type Action =
       type: "addElements";
       elements: StringBuilderElement[];
       elementIdToInsertBefore: string;
+    }
+  | {
+      type: "undo";
+    }
+  | {
+      type: "textChangeStart";
+    }
+  | {
+      type: "textChangeEnd";
+      elementId: string;
     }
   | {
       type: "moveElementsLast";
@@ -70,13 +84,68 @@ type Action =
       element: StringBuilderElement;
     }
   | {
+      type: "wrapInContentBlock";
+    }
+  | {
       type: "unselectAll";
     };
 
-function elementsReducer({ elements: prevElements, selected, drag }: StringBuilderContext, action: Action) {
+function elementsReducer(
+  { history, elements: prevElements, selected, drag }: StringBuilderContextClass,
+  action: Action
+) {
   switch (action.type) {
+    case "undo": {
+      const lastElement = getLasthistoryElement();
+
+      if (lastElement) {
+        return { history, elements: lastElement, selected, drag };
+      }
+      return { history, elements: prevElements, selected, drag };
+    }
+
+    case "textChangeStart": {
+      const newElements = prevElements.map((element) => {
+        const clone = element.cloneDeep();
+        return clone;
+      });
+      addToHistory(newElements);
+
+      return { history, elements: prevElements, selected, drag };
+    }
+
+    case "textChangeEnd": {
+      const lasthistoryElement = history.at(-1);
+      if (lasthistoryElement) {
+        const oldElement = findRecursive(action.elementId, lasthistoryElement);
+        const newElement = findRecursive(action.elementId, prevElements);
+
+        if (!(newElement instanceof ContentBlock) && !(oldElement instanceof ContentBlock)) {
+          if (!(newElement instanceof TextElement) && !(oldElement instanceof TextElement)) {
+            if (
+              oldElement?.getStringBefore() === newElement?.getStringBefore() &&
+              oldElement?.getStringAfter() === newElement?.getStringAfter()
+            ) {
+              history.pop();
+            }
+          } else if (newElement instanceof TextElement && oldElement instanceof TextElement) {
+            if (oldElement.getValue() === newElement.getValue()) {
+              history.pop();
+            }
+          }
+        }
+      }
+
+      return { history, elements: prevElements, selected, drag };
+    }
+
     case "addElements": {
+      addToHistory(prevElements);
       const newElements = prevElements.map((element) => element.cloneDeep());
+
+      if (action.elementIdToInsertBefore === "last") {
+        return { history, elements: newElements.concat(action.elements), selected, drag };
+      }
 
       action.elements.forEach((iterationElement) => {
         const addedSuccessful = addElementRecursive(iterationElement, action.elementIdToInsertBefore, newElements);
@@ -84,13 +153,37 @@ function elementsReducer({ elements: prevElements, selected, drag }: StringBuild
         if (!addedSuccessful) throw new Error("Could not add element successfully!");
       });
 
-      return { elements: newElements, selected, drag };
+      return { history, elements: newElements, selected, drag };
+    }
+
+    case "wrapInContentBlock": {
+      if (selected.length === 0) return { history, elements: prevElements, selected, drag };
+      addToHistory(prevElements);
+
+      const newElements = prevElements.map((element) => element.cloneDeep());
+
+      const sortedSelected = sortRecursiveAndRemoveChildrenFromOuterScope(selected, newElements);
+
+      const clonedSortedSelected = sortedSelected.map((e) => {
+        const clone = e.cloneDeep();
+        mutateIdRecursive(clone);
+        return clone;
+      });
+
+      addElementRecursive(new ContentBlock(clonedSortedSelected), sortedSelected[0].getId(), newElements);
+      sortedSelected.forEach((e) => removeElementRecursive(e, newElements));
+
+      return { history, elements: newElements, selected: [], drag };
     }
 
     case "dragStart": {
       const clonedDragElements = action.elements.map((e) => e.cloneDeep());
       const dragElements = sortRecursiveAndRemoveChildrenFromOuterScope(clonedDragElements, prevElements);
+
+      sessionStorage.setItem("drag", JSON.stringify(dragElements));
+
       return {
+        history,
         elements: prevElements,
         selected,
         drag: { elements: dragElements, clientWidth: action.elementClientWidth },
@@ -98,10 +191,11 @@ function elementsReducer({ elements: prevElements, selected, drag }: StringBuild
     }
 
     case "dragEnd": {
-      return { elements: prevElements, selected, drag: { elements: [], clientWidth: 0 } };
+      return { history, elements: prevElements, selected, drag: { elements: [], clientWidth: 0 } };
     }
 
     case "moveElementsLast": {
+      addToHistory(prevElements);
       const newElements = prevElements.map((element) => element.cloneDeep());
 
       drag.elements.forEach((element) => {
@@ -109,10 +203,11 @@ function elementsReducer({ elements: prevElements, selected, drag }: StringBuild
         newElements.push(element);
       });
 
-      return { elements: newElements, selected, drag: { elements: [], clientWidth: 0 } };
+      return { history, elements: newElements, selected, drag: { elements: [], clientWidth: 0 } };
     }
 
     case "moveElements": {
+      addToHistory(prevElements);
       const newElements = prevElements.map((element) => element.cloneDeep());
 
       drag.elements.forEach((element) => {
@@ -129,16 +224,19 @@ function elementsReducer({ elements: prevElements, selected, drag }: StringBuild
         if (!addedSuccessful) throw new Error("Could not add element successfully!");
       });
 
-      return { elements: newElements, selected, drag: { elements: [], clientWidth: 0 } };
+      return { history, elements: newElements, selected, drag: { elements: [], clientWidth: 0 } };
     }
 
     case "removeElements": {
+      addToHistory(prevElements);
       const newElements = prevElements.map((element) => element.cloneDeep());
 
       action.elements.forEach((element) => {
         removeElementRecursive(element, newElements);
       });
-      return { elements: newElements, selected, drag };
+      const newSelected = selected.filter((element) => !action.elements.find((e) => e.getId() === element.getId()));
+
+      return { history, elements: newElements, selected: newSelected, drag };
     }
 
     case "toggleInSelected": {
@@ -148,7 +246,7 @@ function elementsReducer({ elements: prevElements, selected, drag }: StringBuild
       } else {
         newSelected.push(action.element);
       }
-      return { elements: prevElements, selected: newSelected, drag };
+      return { history, elements: prevElements, selected: newSelected, drag };
     }
 
     case "selectRange": {
@@ -157,25 +255,40 @@ function elementsReducer({ elements: prevElements, selected, drag }: StringBuild
       if (selected.length) {
         const clickedElementIndex = flatIds.indexOf(action.element.getId());
         const firstSelectedElementIndex = flatIds.indexOf(selected[0].getId());
+
         let selectedIds;
+
         if (clickedElementIndex > firstSelectedElementIndex) {
           selectedIds = flatIds.slice(firstSelectedElementIndex, clickedElementIndex + 1);
         } else {
           selectedIds = flatIds.slice(clickedElementIndex, firstSelectedElementIndex + 1);
         }
         const newSelected = selectedIds.map((id) => findRecursive(id, prevElements) as StringBuilderElement);
-        return { elements: prevElements, selected: newSelected, drag };
+        return { history, elements: prevElements, selected: newSelected, drag };
       } else {
-        return { elements: prevElements, selected: [action.element], drag };
+        return { history, elements: prevElements, selected: [action.element], drag };
       }
     }
 
     case "unselectAll": {
-      return { elements: prevElements, selected: [], drag };
+      return { history, elements: prevElements, selected: [], drag };
     }
 
     default:
       throw Error("Unknown action");
+  }
+
+  function getLasthistoryElement() {
+    return history.pop();
+  }
+
+  function addToHistory(elements: StringBuilderElement[]) {
+    const maxhistoryLength = 100;
+
+    if (history.length >= maxhistoryLength) {
+      history.splice(0, 1);
+    }
+    history.push(elements);
   }
 
   function sortRecursiveAndRemoveChildrenFromOuterScope(

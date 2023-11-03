@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useStringBuilder } from "../StringBuilderContextNew";
+import { useStringBuilderClass } from "../StringBuilderContextClass";
 import { FunctionElement, isRecursiveElement } from "../classes/AbstractElement";
 
 const DEFAULT_DROPZONE_WITH = 8;
@@ -16,7 +16,7 @@ const DropZone = ({ elementId }: DropZoneProps): JSX.Element => {
   const {
     dispatch,
     context: { drag },
-  } = useStringBuilder();
+  } = useStringBuilderClass();
   const [width, setWidth] = useState(`${DEFAULT_DROPZONE_WITH}px`);
 
   const dropZoneRef = useRef<HTMLDivElement>(null);
@@ -48,7 +48,7 @@ const DropZone = ({ elementId }: DropZoneProps): JSX.Element => {
     e.preventDefault();
     const dropZone = dropZoneRef.current;
     if (dropZone) {
-      const buffer = 16;
+      const buffer = 180;
       const availableSpaceRight = window.innerWidth - dropZone.offsetLeft - dropZone.clientWidth - buffer;
       if (availableSpaceRight < drag.clientWidth) {
         setWidth(`${availableSpaceRight}px`);
@@ -59,6 +59,7 @@ const DropZone = ({ elementId }: DropZoneProps): JSX.Element => {
 
     e.stopPropagation();
   };
+
   const handleDragLeave = (e: DragEvent) => {
     setWidth(`${DEFAULT_DROPZONE_WITH}px`);
     e.preventDefault();

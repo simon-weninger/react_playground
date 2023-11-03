@@ -4,6 +4,6 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/react_playground/",
+  // base: "/react_playground/",
   plugins: [react(), tsconfigPaths()],
 });

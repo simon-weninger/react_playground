@@ -1,6 +1,7 @@
-import { StringBuilderContextProvider } from "@src/string-builder/StringBuilderContextNew";
+import { StringBuilderContextClassProvider } from "@src/string-builder/class-impl/StringBuilderContextClass";
 import StringBuilder from "@src/string-builder/StringBuilderNew";
 import { router } from "../App";
+import { Outlet } from "react-router-dom";
 
 const Landing = (): JSX.Element => {
   return (
@@ -17,9 +18,7 @@ const Landing = (): JSX.Element => {
         </nav>
       </div>
       <div id="detail" className="flex-1">
-        <StringBuilderContextProvider>
-          <StringBuilder />
-        </StringBuilderContextProvider>
+        <Outlet />
       </div>
     </div>
   );
