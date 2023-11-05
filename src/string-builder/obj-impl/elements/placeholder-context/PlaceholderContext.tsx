@@ -73,7 +73,7 @@ const Trigger = ({ changePlaceholderFn, ...spanProps }: TriggerProps) => {
 const DialogContent = () => {
   const { placeholder, changePlaceholderFunctionRef } = usePlaceholderContext();
   const inputRef = useRef<HTMLInputElement>(null);
-  const { setOpen } = useDialogContext();
+  const { setOpen, open } = useDialogContext();
 
   useEffect(() => {
     if (inputRef.current) inputRef.current.focus();
