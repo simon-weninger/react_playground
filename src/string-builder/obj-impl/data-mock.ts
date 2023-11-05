@@ -1,12 +1,74 @@
+import {
+  ArrayListJentisPlaceholder,
+  GuiListJentisPlaceholder,
+  JentisFunction,
+  JentisPlaceholder,
+  NormalJentisPlaceholder,
+} from "../jentis-types";
+import { generateId } from "../utils";
 import { PixelBuilderElement } from "./types";
+
+const exampleFunction: JentisFunction = {
+  id: generateId(),
+  name: "Anonymize",
+};
+
+export const functions: JentisFunction[] = [exampleFunction];
+
+const normalExamplePlaceholder: NormalJentisPlaceholder = {
+  type: undefined,
+  id: generateId(),
+  name: "Href",
+  desc: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+  group: "group",
+  optional: false,
+  hash: false,
+  value: "jentis.core.jtm.plugin.variable.product_quantity",
+};
+
+const guiListExamplePlaceholder: GuiListJentisPlaceholder = {
+  type: "guilist",
+  id: generateId(),
+  name: "Guilist",
+  desc: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+  group: "group",
+  optional: false,
+  entries: {},
+  payload: [],
+  stream: [],
+};
+
+const arrayListExamplePlaceholder: ArrayListJentisPlaceholder = {
+  type: "arraylist",
+  id: generateId(),
+  name: "Arraylist",
+  desc: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+  group: "group",
+  optional: false,
+  filter: { value: "", operator: "eq", variable: "jentis.core.jtm.plugin.variable.product_type" },
+  payload: [],
+  stream: [],
+};
+
+export const placeholder: JentisPlaceholder[] = [
+  normalExamplePlaceholder,
+  guiListExamplePlaceholder,
+  arrayListExamplePlaceholder,
+];
 
 export const metaPixelBasicPayload: PixelBuilderElement[] = [
   {
     id: "1hkrzio35yq",
     type: "TEXT",
     value: '{"partner_agent": "pljentis-1.2",',
-    label: '{"partner_agent": "pljentis-1.2",',
-    color: undefined,
+  },
+  {
+    id: "0zi3pcr1bes",
+    type: "PLACEHOLDER",
+    placeholder: normalExamplePlaceholder,
+    optional: false,
+    stringBefore: '"event_name":"',
+    stringAfter: 'CustomizeProduct",',
   },
 ];
 
@@ -15,31 +77,24 @@ export const metaPixelPayload: PixelBuilderElement[] = [
     id: "9hkrzib35yq",
     type: "TEXT",
     value: '"data":',
-    label: '"data":',
     color: undefined,
   },
   {
     id: "39swi09lv9f",
     type: "TEXT",
     value: "[",
-    label: "[",
     color: "orange",
   },
   {
     id: "3uzceyltcmh",
     type: "TEXT",
     value: "{",
-    label: "{",
     color: "blue",
   },
   {
     id: "0zi3pcr1bed",
     type: "PLACEHOLDER",
-    label: "Event Name Prefix",
-    placeholder: {
-      id: "4zafk5w56ds",
-      label: "Event Name Prefix",
-    },
+    placeholder: normalExamplePlaceholder,
     optional: false,
     stringBefore: '"event_name":"',
     stringAfter: 'CustomizeProduct",',
@@ -47,11 +102,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
   {
     id: "j50u2wngobo",
     type: "PLACEHOLDER",
-    label: "Event Time",
-    placeholder: {
-      id: "q0x0qnogrk",
-      label: "Event Time",
-    },
+    placeholder: normalExamplePlaceholder,
     optional: false,
     stringBefore: '"event_time":"',
     stringAfter: '",',
@@ -59,11 +110,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
   {
     id: "l646tryrfh",
     type: "PLACEHOLDER",
-    label: "Event Id",
-    placeholder: {
-      id: "j7i9es2y8e",
-      label: "Event Id",
-    },
+    placeholder: normalExamplePlaceholder,
     optional: false,
     stringBefore: '"event_id":"',
     stringAfter: '",',
@@ -71,11 +118,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
   {
     id: "hh4nhrar36u",
     type: "PLACEHOLDER",
-    label: "Href",
-    placeholder: {
-      id: "tu8q12ty6wb",
-      label: "Href",
-    },
+    placeholder: normalExamplePlaceholder,
     optional: false,
     stringBefore: '"event_source_url":"',
     stringAfter: '",',
@@ -83,11 +126,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
   {
     id: "1tb48rorxre",
     type: "PLACEHOLDER",
-    label: "Action Source",
-    placeholder: {
-      id: "voehi8zlfh",
-      label: "Action Source",
-    },
+    placeholder: normalExamplePlaceholder,
     optional: false,
     stringBefore: '"action_source":"',
     stringAfter: '",',
@@ -95,11 +134,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
   {
     id: "ox3uh789vp",
     type: "PLACEHOLDER",
-    label: "Opt Out",
-    placeholder: {
-      id: "ulzlsknnow",
-      label: "Opt Out",
-    },
+    placeholder: normalExamplePlaceholder,
     optional: true,
     stringBefore: '"opt_out":"',
     stringAfter: '",',
@@ -108,14 +143,12 @@ export const metaPixelPayload: PixelBuilderElement[] = [
     id: "1i4q9o60dl4",
     type: "TEXT",
     value: '"user_data":',
-    label: '"user_data":',
     color: undefined,
   },
   {
     id: "9pujruubrqp",
     type: "TEXT",
     value: "{",
-    label: "{",
     color: "#00d200",
   },
   {
@@ -126,11 +159,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "900894oatjv",
         type: "PLACEHOLDER",
-        label: "Email",
-        placeholder: {
-          id: "y6c7kx0a8a8",
-          label: "Email",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"em":"',
         stringAfter: '",',
@@ -138,11 +167,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "22mpwdqs0yk",
         type: "PLACEHOLDER",
-        label: "Phone",
-        placeholder: {
-          id: "pco3lkb2d3r",
-          label: "Phone",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"ph":"',
         stringAfter: '",',
@@ -150,11 +175,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "jxbka4dmlan",
         type: "PLACEHOLDER",
-        label: "Gender",
-        placeholder: {
-          id: "yt1uyj94ha",
-          label: "Gender",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"ge":"',
         stringAfter: '",',
@@ -162,11 +183,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "3vulxx80en",
         type: "PLACEHOLDER",
-        label: "Day Of Birth",
-        placeholder: {
-          id: "ou8jisqdhfc",
-          label: "Day Of Birth",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"db":"',
         stringAfter: '",',
@@ -174,11 +191,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "qpd6ouzza8p",
         type: "PLACEHOLDER",
-        label: "Last Name",
-        placeholder: {
-          id: "vxfavini7re",
-          label: "Last Name",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"ln":"',
         stringAfter: '",',
@@ -186,11 +199,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "5bds1w1l4rg",
         type: "PLACEHOLDER",
-        label: "First Name",
-        placeholder: {
-          id: "zzarpkj5vib",
-          label: "First Name",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"fn":"',
         stringAfter: '",',
@@ -198,11 +207,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "rfbm9oielx",
         type: "PLACEHOLDER",
-        label: "City",
-        placeholder: {
-          id: "4cvl43jvxyv",
-          label: "City",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"ct":"',
         stringAfter: '",',
@@ -210,11 +215,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "74gf8gv7l9o",
         type: "PLACEHOLDER",
-        label: "Street",
-        placeholder: {
-          id: "5t88zqokxud",
-          label: "Street",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"st":"',
         stringAfter: '",',
@@ -222,11 +223,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "umkiw0ybfpm",
         type: "PLACEHOLDER",
-        label: "ZIP",
-        placeholder: {
-          id: "6ziv2bigrg",
-          label: "ZIP",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"zp":"',
         stringAfter: '",',
@@ -234,11 +231,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "ue0qsuhpw7s",
         type: "PLACEHOLDER",
-        label: "Country",
-        placeholder: {
-          id: "wacofvqvy9l",
-          label: "Country",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"country":"',
         stringAfter: '",',
@@ -246,11 +239,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "y62s092m9j",
         type: "PLACEHOLDER",
-        label: "Subscription ID",
-        placeholder: {
-          id: "zngauu42ip",
-          label: "Subscription ID",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"subscription_id":"',
         stringAfter: '",',
@@ -258,11 +247,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "9vy4tvj4ht5",
         type: "PLACEHOLDER",
-        label: "Lead ID",
-        placeholder: {
-          id: "2l1kml23xe9",
-          label: "Lead ID",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"lead_id":"',
         stringAfter: '",',
@@ -270,11 +255,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "0aimyff42dtq",
         type: "PLACEHOLDER",
-        label: "FB Login ID",
-        placeholder: {
-          id: "obws4yx5wq",
-          label: "FB Login ID",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"fb_login_id":"',
         stringAfter: '",',
@@ -282,11 +263,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "4eb448vh2lw",
         type: "PLACEHOLDER",
-        label: "External ID",
-        placeholder: {
-          id: "jpqw31v01fa",
-          label: "External ID",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"fb_external_id":"',
         stringAfter: '",',
@@ -294,11 +271,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "ruhfgguc3xr",
         type: "PLACEHOLDER",
-        label: "Click ID",
-        placeholder: {
-          id: "n2ii897tbx",
-          label: "Click ID",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"fbc":"',
         stringAfter: '",',
@@ -306,11 +279,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "n2w4iswub2",
         type: "PLACEHOLDER",
-        label: "Browser ID",
-        placeholder: {
-          id: "j7arvi0qj3",
-          label: "Browser ID",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: '"fbp":"',
         stringAfter: '",',
@@ -318,22 +287,14 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "jlv5t4upc4",
         type: "FUNCTION",
-        fn: {
-          id: "oiilwhg576",
-          label: "Anonymize",
-        },
-        label: "Anonymize",
+        fn: exampleFunction,
         stringBefore: '"client_ip_address":"',
         stringAfter: '",',
         children: [
           {
             id: "2pxc58qy73y",
             type: "PLACEHOLDER",
-            label: "Client IP Address",
-            placeholder: {
-              id: "pyf308fxgbe",
-              label: "Client IP Address",
-            },
+            placeholder: normalExamplePlaceholder,
             optional: false,
             stringBefore: undefined,
             stringAfter: undefined,
@@ -344,22 +305,14 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "edv27xb1lee",
         type: "FUNCTION",
-        fn: {
-          id: "ow64vynhei",
-          label: "Anonymize",
-        },
-        label: "Anonymize",
+        fn: exampleFunction,
         stringBefore: '"client_user_agent":"',
         stringAfter: '"',
         children: [
           {
             id: "pylh40pc4xc",
             type: "PLACEHOLDER",
-            label: "Client User Agent",
-            placeholder: {
-              id: "w6lapc8ama",
-              label: "Client User Agent",
-            },
+            placeholder: normalExamplePlaceholder,
             optional: false,
             stringBefore: undefined,
             stringAfter: undefined,
@@ -374,28 +327,24 @@ export const metaPixelPayload: PixelBuilderElement[] = [
     id: "cpcz9nh7vd4",
     type: "TEXT",
     value: "}",
-    label: "}",
     color: "#00d200",
   },
   {
     id: "b3en0bt2oho",
     type: "TEXT",
     value: ",",
-    label: ",",
     color: undefined,
   },
   {
     id: "y617r6q91t",
     type: "TEXT",
     value: '"custom_data":',
-    label: '"custom_data":',
     color: undefined,
   },
   {
     id: "ghrvozrxgyu",
     type: "TEXT",
     value: "{",
-    label: "{",
     color: "red",
   },
   {
@@ -407,17 +356,12 @@ export const metaPixelPayload: PixelBuilderElement[] = [
         id: "ph4etndzmze",
         type: "TEXT",
         value: '"jentis":"true"',
-        label: '"jentis":"true"',
         color: undefined,
       },
       {
         id: "1bhipv47b3e",
         type: "PLACEHOLDER",
-        label: "Custom Parameters",
-        placeholder: {
-          id: "8boefzbaocy",
-          label: "Custom Parameters",
-        },
+        placeholder: guiListExamplePlaceholder,
         optional: false,
         stringBefore: undefined,
         stringAfter: undefined,
@@ -425,11 +369,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "g20x9pwah0d",
         type: "PLACEHOLDER",
-        label: "Content Category",
-        placeholder: {
-          id: "qvoizx4vmvq",
-          label: "Content Category",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: ',"content_category":"',
         stringAfter: '"',
@@ -437,11 +377,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "immf2bgh4tg",
         type: "PLACEHOLDER",
-        label: "Content Name",
-        placeholder: {
-          id: "1vkbplvsoiz",
-          label: "Content Name",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: ',"content_name":"',
         stringAfter: '"',
@@ -449,11 +385,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "0jh13qew2un",
         type: "PLACEHOLDER",
-        label: "Currency",
-        placeholder: {
-          id: "pkcd514n25",
-          label: "Currency",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: ',"currency":"',
         stringAfter: '"',
@@ -461,11 +393,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "jcsf0zpcw5",
         type: "PLACEHOLDER",
-        label: "Predicted Lifetime Value",
-        placeholder: {
-          id: "13c2mwza2a3b",
-          label: "Predicted Lifetime Value",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: ',"predicted_ltv":"',
         stringAfter: '"',
@@ -473,11 +401,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "t15mo5u5z7",
         type: "PLACEHOLDER",
-        label: "Value",
-        placeholder: {
-          id: "wt1eu7kt45e",
-          label: "Value",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: ',"value":"',
         stringAfter: '"',
@@ -485,11 +409,7 @@ export const metaPixelPayload: PixelBuilderElement[] = [
       {
         id: "er1hc0svuk",
         type: "PLACEHOLDER",
-        label: "Content Type",
-        placeholder: {
-          id: "v09e2e6hc6h",
-          label: "Content Type",
-        },
+        placeholder: normalExamplePlaceholder,
         optional: true,
         stringBefore: ',"content_type":"',
         stringAfter: '"',
@@ -498,31 +418,24 @@ export const metaPixelPayload: PixelBuilderElement[] = [
         id: "zw61uvu8mz",
         type: "TEXT",
         value: ",",
-        label: ",",
         color: undefined,
       },
       {
         id: "njo8b0clmbl",
         type: "TEXT",
         value: '"content_ids":',
-        label: '"content_ids":',
         color: undefined,
       },
       {
         id: "vup03o1q8u",
         type: "TEXT",
         value: "[",
-        label: "[",
         color: "violet",
       },
       {
         id: "xe01e5f5bds",
         type: "PLACEHOLDER",
-        label: "Product IDs",
-        placeholder: {
-          id: "ytrt0i6o0ym",
-          label: "Product IDs",
-        },
+        placeholder: arrayListExamplePlaceholder,
         optional: false,
         stringBefore: undefined,
         stringAfter: undefined,
@@ -531,38 +444,30 @@ export const metaPixelPayload: PixelBuilderElement[] = [
         id: "76sepmw8wm4",
         type: "TEXT",
         value: "]",
-        label: "]",
         color: "violet",
       },
       {
         id: "t1vwexe3fvi",
         type: "TEXT",
         value: ",",
-        label: ",",
         color: undefined,
       },
       {
         id: "7tzvrdqnm6t",
         type: "TEXT",
         value: '"contents":',
-        label: '"contents":',
         color: undefined,
       },
       {
         id: "os34n93345g",
         type: "TEXT",
         value: "[",
-        label: "[",
         color: "violet",
       },
       {
         id: "9np1onp3ng",
         type: "PLACEHOLDER",
-        label: "Product Info",
-        placeholder: {
-          id: "teq28fyvcr",
-          label: "Product Info",
-        },
+        placeholder: arrayListExamplePlaceholder,
         optional: false,
         stringBefore: undefined,
         stringAfter: undefined,
@@ -571,7 +476,6 @@ export const metaPixelPayload: PixelBuilderElement[] = [
         id: "c8dnjzogssq",
         type: "TEXT",
         value: "]",
-        label: "]",
         color: "violet",
       },
     ],
@@ -581,28 +485,24 @@ export const metaPixelPayload: PixelBuilderElement[] = [
     id: "04ps9uqu6vkc",
     type: "TEXT",
     value: "}",
-    label: "}",
     color: "red",
   },
   {
     id: "56oyd0h0ni7",
     type: "TEXT",
     value: "}",
-    label: "}",
     color: "blue",
   },
   {
     id: "fb3it8phkbv",
     type: "TEXT",
     value: "]",
-    label: "]",
     color: "orange",
   },
   {
     id: "qtpztdz0gw",
     type: "TEXT",
     value: "}",
-    label: "}",
     color: undefined,
   },
 ];

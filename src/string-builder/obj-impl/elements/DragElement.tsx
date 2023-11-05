@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import Checkbox from "@assets/Checkbox.svg";
+import * as ContextMenu from "@radix-ui/react-context-menu";
 import { usePixelBuilder } from "../PixelBuilderContext";
 import { PixelBuilderElement } from "../types";
 import PixelBuilderJSXElementFactory from "./PixelBuilderJSXElementFactory";
@@ -76,19 +77,23 @@ const DragElement = ({ element, disabled = false }: DragElementProps): JSX.Eleme
   }, [element, selected]);
 
   return (
-    <div className="relative">
-      {selected.find((selectedElement) => selectedElement.id === element.id) && (
-        <img className="absolute top-0 left-0 w-4 -translate-x-1/2 -translate-y-1/2" src={Checkbox} />
-      )}
-      <div
-        ref={dragElementRef}
-        style={{ opacity: isDragged ? 0.2 : 1 }}
-        className={`flex items-center ${disabled ? "text-gray-400" : "cursor-grab text-gray-800"}`}
-        draggable={!disabled}
-      >
-        <PixelBuilderJSXElementFactory element={element} />
-      </div>
-    </div>
+    <ContextMenu.Root>
+      <ContextMenu.Trigger>
+        <div className="relative">
+          {selected.find((selectedElement) => selectedElement.id === element.id) && (
+            <img className="absolute top-0 left-0 w-4 -translate-x-1/2 -translate-y-1/2" src={Checkbox} />
+          )}
+          <div
+            ref={dragElementRef}
+            style={{ opacity: isDragged ? 0.2 : 1 }}
+            className={`flex items-center ${disabled ? "text-gray-400" : "cursor-grab text-gray-800"}`}
+            draggable={!disabled}
+          >
+            <PixelBuilderJSXElementFactory element={element} disabled={disabled} />
+          </div>
+        </div>
+      </ContextMenu.Trigger>
+    </ContextMenu.Root>
   );
 };
 

@@ -13,7 +13,6 @@ export const createTextElement = (value: string, color?: string): PixelBuilderTe
     id: generateId(),
     type: "TEXT",
     value,
-    label: value,
     color,
   };
 };
@@ -27,7 +26,7 @@ export const createPlaceholderElement = (
   return {
     id: generateId(),
     type: "PLACEHOLDER",
-    label: placeholder.label,
+    label: placeholder.name,
     placeholder: placeholder,
     optional,
     stringBefore,

@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { createContext, useContext, useReducer } from "react";
+import { JentisPlaceholder } from "../jentis-types";
 import { metaPixelPayload } from "./data-mock";
 import { createContentBlock } from "./factoryMethods";
 import {
@@ -9,9 +10,9 @@ import {
   forEachRecursive,
   recursivelyMutateIds,
   removeElement,
-  sortElements,
+  sortAndRemoveNestedElements,
 } from "./pixelBuilderHelperFunctions";
-import { PixelBuilderElement } from "./types";
+import { PixelBuilderElement, PixelBuilderPlaceholder } from "./types";
 
 type PixelBuilderContext = {
   history: PixelBuilderElement[][];
@@ -72,13 +73,16 @@ type Action =
       elementId: string;
     }
   | {
-      type: "copySelected";
+      type: "copy";
+      elements: PixelBuilderElement[];
     }
   | {
       type: "pasteFromClipboard";
+      elementIdToInsertBefore: string;
     }
   | {
-      type: "duplicateSelected";
+      type: "duplicate";
+      elements: PixelBuilderElement[];
     }
   | {
       type: "dragStart";
@@ -90,6 +94,7 @@ type Action =
     }
   | {
       type: "wrapInContentBlock";
+      elements: PixelBuilderElement[];
     }
   | {
       type: "toggleInSelected";
@@ -101,6 +106,11 @@ type Action =
     }
   | {
       type: "unselectAll";
+    }
+  | {
+      type: "changePlaceholder";
+      newPlaceholder: JentisPlaceholder;
+      element: PixelBuilderPlaceholder;
     };
 
 function elementsReducer(context: PixelBuilderContext, action: Action) {
@@ -151,16 +161,13 @@ function elementsReducer(context: PixelBuilderContext, action: Action) {
       return { history, elements: prevElements, selected, drag };
     }
 
-    case "copySelected": {
-      const clonedSelected = _.cloneDeep(selected);
-      clonedSelected.forEach((e) => recursivelyMutateIds(e));
-      sessionStorage.setItem("elementClipboard", JSON.stringify(clonedSelected));
+    case "copy": {
+      const clonedElements = _.cloneDeep(action.elements);
+      sessionStorage.setItem("elementClipboard", JSON.stringify(clonedElements));
       return context;
     }
 
     case "pasteFromClipboard": {
-      if (selected.length === 0) return context;
-
       const clipboardString = sessionStorage.getItem("elementClipboard");
 
       if (clipboardString === null) return context;
@@ -168,12 +175,11 @@ function elementsReducer(context: PixelBuilderContext, action: Action) {
       try {
         const data = JSON.parse(clipboardString) as PixelBuilderElement[];
         addToHistory(prevElements);
-        const newElements = prevElements.map((element) => _.cloneDeep(element));
-
-        const sortedSelected = sortElements(selected, newElements);
+        const newElements = _.cloneDeep(prevElements);
 
         data.forEach((element) => {
-          const addedSuccessful = addElement(element, sortedSelected[0].id, newElements);
+          recursivelyMutateIds(element);
+          const addedSuccessful = addElement(element, action.elementIdToInsertBefore, newElements);
 
           if (!addedSuccessful) throw new Error("Could not add element successfully!");
         });
@@ -184,14 +190,14 @@ function elementsReducer(context: PixelBuilderContext, action: Action) {
       }
     }
 
-    case "duplicateSelected": {
-      if (selected.length === 0) return context;
+    case "duplicate": {
+      if (action.elements.length === 0) return context;
       addToHistory(prevElements);
       const newElements = prevElements.map((element) => _.cloneDeep(element));
 
       prevElements.forEach((element) => {
         forEachRecursive(element, (e) => {
-          const foundElement = selected.find((selectedElement) => selectedElement.id === e.id);
+          const foundElement = action.elements.find((element) => element.id === e.id);
           if (foundElement) {
             const clone = _.cloneDeep(foundElement);
             recursivelyMutateIds(clone);
@@ -226,28 +232,32 @@ function elementsReducer(context: PixelBuilderContext, action: Action) {
     }
 
     case "wrapInContentBlock": {
-      if (selected.length === 0) return { history: history, elements: prevElements, selected: selected, drag: drag };
+      if (action.elements.length === 0) return context;
       addToHistory(prevElements);
 
       const newElements = prevElements.map((element) => _.cloneDeep(element));
 
-      const sortedSelected = sortElements(selected, newElements);
+      const sortedElements = sortAndRemoveNestedElements(action.elements, newElements);
 
-      const clonedSortedSelected = sortedSelected.map((e) => {
+      const clonedSortedElements = sortedElements.map((e) => {
         const clone = _.cloneDeep(e);
-        recursivelyMutateIds(clone);
         return clone;
       });
 
-      addElement(createContentBlock(clonedSortedSelected), sortedSelected[0].id, newElements);
-      sortedSelected.forEach((e) => removeElement(e.id, newElements));
+      const contentBlock = createContentBlock([]);
 
-      return { history: history, elements: newElements, selected: [], drag: drag };
+      addElement(contentBlock, sortedElements[0].id, newElements);
+
+      sortedElements.forEach((e) => removeElement(e.id, newElements));
+
+      contentBlock.children = clonedSortedElements;
+
+      return { history, elements: newElements, selected, drag };
     }
 
     case "dragStart": {
       const clonedDragElements = action.elements.map((e) => _.cloneDeep(e));
-      const dragElements = sortElements(clonedDragElements, prevElements);
+      const dragElements = sortAndRemoveNestedElements(clonedDragElements, prevElements);
 
       sessionStorage.setItem("drag", JSON.stringify(dragElements));
 
@@ -336,6 +346,18 @@ function elementsReducer(context: PixelBuilderContext, action: Action) {
 
     case "unselectAll": {
       return { history: history, elements: prevElements, selected: [], drag: drag };
+    }
+
+    case "changePlaceholder": {
+      const newElements = _.cloneDeep(prevElements);
+      const element = findElement(action.element.id, newElements);
+
+      if (!element || element.type !== "PLACEHOLDER") return context;
+      addToHistory(prevElements);
+
+      element.placeholder = action.newPlaceholder;
+
+      return { history, elements: newElements, selected, drag };
     }
 
     default:

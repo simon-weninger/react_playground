@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { PixelBuilderElement } from "./obj-impl/types";
 
 export const generateId = () => Math.random().toString(36).slice(2);
@@ -23,3 +24,9 @@ export function isDeeplyNested(activeElement: HTMLElement | null, containerEleme
 
   return false;
 }
+
+export const useTriggerRerender = () => {
+  const [toggle, setToggle] = useState(false);
+
+  return () => setToggle((prev) => !prev);
+};

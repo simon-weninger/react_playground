@@ -93,16 +93,20 @@ export const addElement = (element: PixelBuilderElement, insertBeforeId: string,
   return false;
 };
 
-export const sortElements = (elementsToSort: PixelBuilderElement[], elements: PixelBuilderElement[]) => {
-  let sortedDragElements: PixelBuilderElement[] = [];
-  const flatElements = flattenPixelBuilderElements(elements);
+export const sortAndRemoveNestedElements = (elementsToSort: PixelBuilderElement[], elements: PixelBuilderElement[]) => {
+  let sortedElements: PixelBuilderElement[] = [];
 
-  flatElements.forEach((element) => {
-    const inElementsToSort = elementsToSort.find((sortElement) => sortElement.id === element.id);
-    if (inElementsToSort) {
-      sortedDragElements.push(element);
+  for (let i = 0; i < elements.length; i++) {
+    const iterationElement = elements[i];
+
+    const elementFoundInFirstLayer = elementsToSort.find((element) => element.id === iterationElement.id);
+
+    if (elementFoundInFirstLayer) {
+      sortedElements.push(elementFoundInFirstLayer);
+    } else if (isRecursiveElement(iterationElement)) {
+      const elementsFoundInChildren = sortAndRemoveNestedElements(elementsToSort, iterationElement.children);
+      sortedElements = sortedElements.concat(elementsFoundInChildren);
     }
-  });
-
-  return sortedDragElements;
+  }
+  return sortedElements;
 };

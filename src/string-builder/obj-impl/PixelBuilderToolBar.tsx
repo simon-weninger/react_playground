@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useActiveStringBuilderId } from "../ActiveStringBuilderContext";
 import { usePixelBuilder } from "./PixelBuilderContext";
 import PixelBuilderToolBarButton from "./PixelBuilderToolBarButton";
+import { sortAndRemoveNestedElements } from "./pixelBuilderHelperFunctions";
 
 interface PixelBuilderToolBarProps {
   pixelBuilderId: string;
@@ -21,7 +22,7 @@ interface PixelBuilderToolBarProps {
  */
 const PixelBuilderToolBar = ({ pixelBuilderId }: PixelBuilderToolBarProps): JSX.Element => {
   const {
-    context: { history, selected },
+    context: { history, elements, selected },
     dispatch,
   } = usePixelBuilder();
 
@@ -37,17 +38,22 @@ const PixelBuilderToolBar = ({ pixelBuilderId }: PixelBuilderToolBarProps): JSX.
       }
       if (e.ctrlKey && e.key === "d") {
         e.preventDefault();
-        dispatch({ type: "duplicateSelected" });
+        dispatch({ type: "duplicate", elements: selected });
       }
       if (e.ctrlKey && e.key === "c") {
         e.preventDefault();
-        dispatch({ type: "copySelected" });
+        dispatch({ type: "copy", elements: selected });
       }
       if (e.ctrlKey && e.key === "v") {
         e.preventDefault();
-        dispatch({ type: "pasteFromClipboard" });
+        handlePaste();
       }
     }
+  };
+
+  const handlePaste = () => {
+    const sortedSelected = sortAndRemoveNestedElements(selected, elements);
+    dispatch({ type: "pasteFromClipboard", elementIdToInsertBefore: sortedSelected[0].id });
   };
 
   useEffect(() => {
@@ -56,7 +62,7 @@ const PixelBuilderToolBar = ({ pixelBuilderId }: PixelBuilderToolBarProps): JSX.
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [selected, activeBuilderId]);
+  }, [selected, elements, activeBuilderId]);
 
   const undoButtonDisabled = history.length === 0;
   const nothingSelected = selected.length === 0;
@@ -85,7 +91,7 @@ const PixelBuilderToolBar = ({ pixelBuilderId }: PixelBuilderToolBarProps): JSX.
           disabled={nothingSelected}
           toolTip="Wrap In ContentBlock"
           onClick={() => {
-            if (!nothingSelected) dispatch({ type: "wrapInContentBlock" });
+            if (!nothingSelected) dispatch({ type: "wrapInContentBlock", elements: selected });
           }}
         />
         <PixelBuilderToolBarButton
@@ -93,7 +99,7 @@ const PixelBuilderToolBar = ({ pixelBuilderId }: PixelBuilderToolBarProps): JSX.
           disabled={nothingSelected}
           toolTip="Duplicate [ctrl + d]"
           onClick={() => {
-            if (!nothingSelected) dispatch({ type: "duplicateSelected" });
+            if (!nothingSelected) dispatch({ type: "duplicate", elements: selected });
           }}
         />
         <PixelBuilderToolBarButton
@@ -101,7 +107,7 @@ const PixelBuilderToolBar = ({ pixelBuilderId }: PixelBuilderToolBarProps): JSX.
           disabled={nothingSelected}
           toolTip="Copy To Clipboard [ctrl + c]"
           onClick={() => {
-            if (!nothingSelected) dispatch({ type: "copySelected" });
+            if (!nothingSelected) dispatch({ type: "copy", elements: selected });
           }}
         />
         <PixelBuilderToolBarButton
@@ -109,7 +115,7 @@ const PixelBuilderToolBar = ({ pixelBuilderId }: PixelBuilderToolBarProps): JSX.
           disabled={nothingSelected}
           toolTip="Paste From Clipboard [ctrl + v]"
           onClick={() => {
-            if (!nothingSelected) dispatch({ type: "pasteFromClipboard" });
+            if (!nothingSelected) handlePaste();
           }}
         />
       </div>

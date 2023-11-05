@@ -9,7 +9,6 @@ interface AbstractPixelBuilderElement {
 
 export interface PixelBuilderPlaceholder extends AbstractPixelBuilderElement {
   type: "PLACEHOLDER";
-  label: string;
   placeholder: JentisPlaceholder;
   optional: boolean;
   stringBefore?: string;
@@ -18,7 +17,6 @@ export interface PixelBuilderPlaceholder extends AbstractPixelBuilderElement {
 
 export interface PixelBuilderFunction extends AbstractPixelBuilderElement {
   type: "FUNCTION";
-  label: string;
   fn: JentisFunction;
   childrenId: string;
   children: PixelBuilderElement[];

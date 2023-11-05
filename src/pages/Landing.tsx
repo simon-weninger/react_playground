@@ -1,7 +1,10 @@
-import { StringBuilderContextClassProvider } from "@src/string-builder/class-impl/StringBuilderContextClass";
-import StringBuilder from "@src/string-builder/StringBuilderNew";
-import { router } from "../App";
+import { ActiveStringBuilderIdContextProvider } from "@src/string-builder/ActiveStringBuilderContext";
+import PixelBuilder from "@src/string-builder/obj-impl/PixelBuilder";
+import { PixelBuilderContextProvider } from "@src/string-builder/obj-impl/PixelBuilderContext";
+import Placeholder from "@src/string-builder/obj-impl/elements/placeholder-context/PlaceholderContext";
+import { generateId } from "@src/string-builder/utils";
 import { Outlet } from "react-router-dom";
+import { router } from "../App";
 
 const Landing = (): JSX.Element => {
   return (
@@ -18,7 +21,21 @@ const Landing = (): JSX.Element => {
         </nav>
       </div>
       <div id="detail" className="flex-1">
-        <Outlet />
+        <Placeholder.root>
+          <ActiveStringBuilderIdContextProvider>
+            <PixelBuilderContextProvider>
+              <PixelBuilder id={generateId()} />
+            </PixelBuilderContextProvider>
+            <br />
+            <br />
+            <br />
+            <br />
+            <PixelBuilderContextProvider>
+              <PixelBuilder id={generateId()} />
+            </PixelBuilderContextProvider>
+          </ActiveStringBuilderIdContextProvider>
+          <Outlet />
+        </Placeholder.root>
       </div>
     </div>
   );
