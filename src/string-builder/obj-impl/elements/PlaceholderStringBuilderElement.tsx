@@ -1,13 +1,18 @@
-import { ArrowPathIcon, ListBulletIcon, Square3Stack3DIcon, StarIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowPathIcon,
+  ListBulletIcon,
+  LockClosedIcon,
+  Square3Stack3DIcon,
+  StarIcon,
+} from "@heroicons/react/24/outline";
+import { JentisPlaceholder } from "@src/string-builder/jentis-types";
+import { useState } from "react";
 import ContentEditable from "../ContentEditable";
+import { usePixelBuilder } from "../PixelBuilderContext";
 import { PixelBuilderPlaceholder } from "../types";
 import ContextMenu from "./context-menu/ContextMenu";
-import Placeholder from "./placeholder-context/PlaceholderContext";
 import ContextMenuItem from "./context-menu/ContextMenuItem";
-import { JentisPlaceholder } from "@src/string-builder/jentis-types";
-import { useTriggerRerender } from "@src/string-builder/utils";
-import { usePixelBuilder } from "../PixelBuilderContext";
-import { useState } from "react";
+import Placeholder from "./placeholder-context/PlaceholderContext";
 
 interface PlaceholderStringBuilderElementProps {
   element: PixelBuilderPlaceholder;
@@ -26,7 +31,7 @@ const PlaceholderStringBuilderElement = ({
   const [placeholderWasChanged, setPlaceholderWasChanged] = useState(false);
 
   let wrapperColorStyles = "border-sky-50 bg-sky-50";
-  let placeholderColorStyles = placeholderWasChanged ? "bg-sky-600 text-white" : "bg-sky-200";
+  let placeholderColorStyles = placeholderWasChanged ? "bg-sky-600" : "bg-sky-200";
 
   if (element.optional) {
     wrapperColorStyles = placeholderWasChanged ? "border-sky-600 bg-sky-200" : "border-sky-400 bg-sky-50";
@@ -78,6 +83,13 @@ const PlaceholderStringBuilderElement = ({
           <Placeholder.trigger changePlaceholderFn={changePlaceholderFunction}>
             <ContextMenuItem label="Change Placeholder" icon={ArrowPathIcon} />
           </Placeholder.trigger>
+          <ContextMenuItem
+            label="Toggle Optional"
+            icon={LockClosedIcon}
+            onClick={() => {
+              dispatch({ type: "changeOptional", element });
+            }}
+          />
         </ContextMenu>
       )}
     </div>

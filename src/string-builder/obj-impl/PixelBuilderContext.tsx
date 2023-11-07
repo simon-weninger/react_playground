@@ -111,6 +111,10 @@ type Action =
       type: "changePlaceholder";
       newPlaceholder: JentisPlaceholder;
       element: PixelBuilderPlaceholder;
+    }
+  | {
+      type: "changeOptional";
+      element: PixelBuilderPlaceholder;
     };
 
 function elementsReducer(context: PixelBuilderContext, action: Action) {
@@ -356,6 +360,18 @@ function elementsReducer(context: PixelBuilderContext, action: Action) {
       addToHistory(prevElements);
 
       element.placeholder = action.newPlaceholder;
+
+      return { history, elements: newElements, selected, drag };
+    }
+
+    case "changeOptional": {
+      const newElements = _.cloneDeep(prevElements);
+      const element = findElement(action.element.id, newElements);
+
+      if (!element || element.type !== "PLACEHOLDER") return context;
+      addToHistory(prevElements);
+
+      element.optional = !element.optional;
 
       return { history, elements: newElements, selected, drag };
     }
