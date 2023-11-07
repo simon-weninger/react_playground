@@ -29,7 +29,7 @@ const normalExamplePlaceholder: NormalJentisPlaceholder = {
 const guiListExamplePlaceholder: GuiListJentisPlaceholder = {
   type: "guilist",
   id: generateId(),
-  name: "Guilist",
+  name: "Custom Parameters",
   desc: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
   group: "group",
   optional: false,
@@ -41,7 +41,7 @@ const guiListExamplePlaceholder: GuiListJentisPlaceholder = {
 const arrayListExamplePlaceholder: ArrayListJentisPlaceholder = {
   type: "arraylist",
   id: generateId(),
-  name: "Arraylist",
+  name: "Products",
   desc: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
   group: "group",
   optional: false,

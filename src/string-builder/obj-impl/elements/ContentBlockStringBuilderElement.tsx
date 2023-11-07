@@ -28,7 +28,7 @@ const ContentBlockStringBuilderElement = ({
       <div className="flex items-center min-h-[24px]">
         <span className="text-gray-600 text-xs">{contentBlockName}</span>
         <button
-          className="px-0.5 py-0.5 ml-2 rounded hover:bg-gray-300 text-gray-600 text-xs"
+          className="px-0.5 py-0.5 ml-2 rounded hover:bg-gray-400/50 text-gray-600 text-xs"
           onClick={() => setShow((prev) => !prev)}
         >
           <div>{show ? <EyeSlashIcon className="h-4" /> : <EyeIcon className="h-4" />}</div>

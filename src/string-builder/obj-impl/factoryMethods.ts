@@ -26,7 +26,6 @@ export const createPlaceholderElement = (
   return {
     id: generateId(),
     type: "PLACEHOLDER",
-    label: placeholder.name,
     placeholder: placeholder,
     optional,
     stringBefore,
@@ -44,7 +43,6 @@ export const createFunctionElement = (
     id: generateId(),
     type: "FUNCTION",
     fn,
-    label: fn.label,
     stringBefore,
     stringAfter,
     children,
