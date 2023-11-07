@@ -7,6 +7,7 @@ import ContextMenuItem from "./context-menu/ContextMenuItem";
 import { JentisPlaceholder } from "@src/string-builder/jentis-types";
 import { useTriggerRerender } from "@src/string-builder/utils";
 import { usePixelBuilder } from "../PixelBuilderContext";
+import { useState } from "react";
 
 interface PlaceholderStringBuilderElementProps {
   element: PixelBuilderPlaceholder;
@@ -21,14 +22,14 @@ const PlaceholderStringBuilderElement = ({
   element,
   disabled = false,
 }: PlaceholderStringBuilderElementProps): JSX.Element => {
-  const rerender = useTriggerRerender();
   const { dispatch } = usePixelBuilder();
+  const [placeholderWasChanged, setPlaceholderWasChanged] = useState(false);
 
   let wrapperColorStyles = "border-sky-50 bg-sky-50";
-  let placeholderColorStyles = "bg-sky-200";
+  let placeholderColorStyles = placeholderWasChanged ? "bg-sky-600 text-white" : "bg-sky-200";
 
   if (element.optional) {
-    wrapperColorStyles = "border-sky-400 bg-sky-50";
+    wrapperColorStyles = placeholderWasChanged ? "border-sky-600 bg-sky-200" : "border-sky-400 bg-sky-50";
   }
 
   let icon = <StarIcon className="h-4" />;
@@ -43,17 +44,26 @@ const PlaceholderStringBuilderElement = ({
 
   const changePlaceholderFunction = (ph: JentisPlaceholder) => {
     dispatch({ type: "changePlaceholder", newPlaceholder: ph, element });
+    setPlaceholderWasChanged(true);
+    setTimeout(() => setPlaceholderWasChanged(false), 800);
   };
 
   return (
-    <div className={"flex items-center border-l-2 border-r-2 p-1 rounded text-sky-950 " + wrapperColorStyles}>
+    <div
+      className={
+        "flex items-center border-l-2 border-r-2 p-1 rounded text-sky-950 transition-colors duration-300 " +
+        wrapperColorStyles
+      }
+    >
       <ContentEditable
         elementId={element.id}
         className="pr-1"
         text={element.stringBefore}
         onChange={(value: string) => (element.stringBefore = value)}
       />
-      <div className={"flex items-center gap-2 py-1 px-2 rounded " + placeholderColorStyles}>
+      <div
+        className={"flex items-center gap-2 py-1 px-2 rounded transition-colors duration-300 " + placeholderColorStyles}
+      >
         {icon}
         {element.placeholder.name}
       </div>
