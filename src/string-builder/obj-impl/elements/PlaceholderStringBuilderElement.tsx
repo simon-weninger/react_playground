@@ -1,5 +1,6 @@
 import {
   ArrowPathIcon,
+  BookmarkIcon,
   ListBulletIcon,
   LockClosedIcon,
   Square3Stack3DIcon,
@@ -30,14 +31,18 @@ const PlaceholderStringBuilderElement = ({
   const { dispatch } = usePixelBuilder();
   const [placeholderWasChanged, setPlaceholderWasChanged] = useState(false);
 
-  let wrapperColorStyles = "border-sky-50 bg-sky-50";
-  let placeholderColorStyles = placeholderWasChanged ? "bg-sky-600" : "bg-sky-200";
+  let placeholderColorStyles = placeholderWasChanged ? "bg-sky-600 text-white" : "bg-sky-200 text-sky-900";
 
+  let optionalBorderStyle = "";
   if (element.optional) {
-    wrapperColorStyles = placeholderWasChanged ? "border-sky-600 bg-sky-200" : "border-sky-400 bg-sky-50";
+    optionalBorderStyle = "border-l-2 border-r-2 rounded-xl ";
+    optionalBorderStyle += placeholderWasChanged
+      ? "border-l-sky-600 border-r-sky-600"
+      : "border-l-sky-300 border-r-sky-300";
   }
+  let wrapperColorStyles = "bg-white ring-1 ring-gray-100 " + optionalBorderStyle;
 
-  let icon = <StarIcon className="h-4" />;
+  let icon = <BookmarkIcon className="h-4" />;
 
   if (element.placeholder.type === "arraylist") {
     icon = <Square3Stack3DIcon className="h-4" />;
@@ -54,12 +59,7 @@ const PlaceholderStringBuilderElement = ({
   };
 
   return (
-    <div
-      className={
-        "flex items-center border-l-2 border-r-2 p-1 rounded text-sky-950 transition-colors duration-300 " +
-        wrapperColorStyles
-      }
-    >
+    <div className={"flex items-center px-1 rounded text-sky-950 transition-colors duration-300 " + wrapperColorStyles}>
       <ContentEditable
         elementId={element.id}
         className="pr-1"

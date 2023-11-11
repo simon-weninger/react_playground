@@ -86,7 +86,7 @@ const DragElement = ({ element, disabled = false }: DragElementProps): JSX.Eleme
           <div
             ref={dragElementRef}
             style={{ opacity: isDragged ? 0.2 : 1 }}
-            className={`flex items-center ${disabled ? "text-gray-400" : "cursor-grab text-gray-800"}`}
+            className={`flex items-center ${disabled ? "text-gray-300" : "cursor-grab text-gray-800"}`}
             draggable={!disabled}
           >
             <PixelBuilderJSXElementFactory element={element} disabled={disabled} />

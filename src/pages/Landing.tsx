@@ -33,6 +33,76 @@ const Landing = (): JSX.Element => {
             <PixelBuilderContextProvider>
               <PixelBuilder id={generateId()} />
             </PixelBuilderContextProvider>
+            <br />
+            <br />
+            <br />
+            <br />
+            <PixelBuilderContextProvider>
+              <PixelBuilder id={generateId()} />
+            </PixelBuilderContextProvider>
+            <br />
+            <br />
+            <br />
+            <br />
+            <PixelBuilderContextProvider>
+              <PixelBuilder id={generateId()} />
+            </PixelBuilderContextProvider>
+            <br />
+            <br />
+            <br />
+            <br />
+            <PixelBuilderContextProvider>
+              <PixelBuilder id={generateId()} />
+            </PixelBuilderContextProvider>
+            <br />
+            <br />
+            <br />
+            <br />
+            <PixelBuilderContextProvider>
+              <PixelBuilder id={generateId()} />
+            </PixelBuilderContextProvider>
+            <br />
+            <br />
+            <br />
+            <br />
+            <PixelBuilderContextProvider>
+              <PixelBuilder id={generateId()} />
+            </PixelBuilderContextProvider>
+            <br />
+            <br />
+            <br />
+            <br />
+            <PixelBuilderContextProvider>
+              <PixelBuilder id={generateId()} />
+            </PixelBuilderContextProvider>
+            <br />
+            <br />
+            <br />
+            <br />
+            <PixelBuilderContextProvider>
+              <PixelBuilder id={generateId()} />
+            </PixelBuilderContextProvider>
+            <br />
+            <br />
+            <br />
+            <br />
+            <PixelBuilderContextProvider>
+              <PixelBuilder id={generateId()} />
+            </PixelBuilderContextProvider>
+            <br />
+            <br />
+            <br />
+            <br />
+            <PixelBuilderContextProvider>
+              <PixelBuilder id={generateId()} />
+            </PixelBuilderContextProvider>
+            <br />
+            <br />
+            <br />
+            <br />
+            <PixelBuilderContextProvider>
+              <PixelBuilder id={generateId()} />
+            </PixelBuilderContextProvider>
           </ActiveStringBuilderIdContextProvider>
           <Outlet />
         </Placeholder.root>

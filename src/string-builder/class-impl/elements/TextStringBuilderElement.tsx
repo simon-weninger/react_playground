@@ -29,7 +29,7 @@ const TextStringBuilderElement = ({ element }: TextStringBuilderElementProps): J
   }, []);
 
   return (
-    <div ref={divRef} className=" p-1 flex rounded bg-slate-50 border border-slate-200">
+    <div ref={divRef} className=" p-1 flex rounded bg-gray-50 border border-gray-200">
       <ContentEditable
         elementId={element.getId()}
         style={{ color: element.getColor() }}

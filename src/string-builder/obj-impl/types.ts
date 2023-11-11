@@ -20,8 +20,6 @@ export interface PixelBuilderFunction extends AbstractPixelBuilderElement {
   fn: JentisFunction;
   childrenId: string;
   children: PixelBuilderElement[];
-  stringBefore?: string;
-  stringAfter?: string;
 }
 
 export interface PixelBuilderText extends AbstractPixelBuilderElement {

@@ -18,7 +18,7 @@ export const functions: JentisFunction[] = [exampleFunction];
 const normalExamplePlaceholder: NormalJentisPlaceholder = {
   type: undefined,
   id: generateId(),
-  name: "Href",
+  name: "Field Name",
   desc: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
   group: "group",
   optional: false,
@@ -108,28 +108,47 @@ export const metaPixelPayload: PixelBuilderElement[] = [
     stringAfter: '",',
   },
   {
+    id: "t50u2wngobs",
+    type: "TEXT",
+    value: '"event_id":"',
+  },
+  {
     id: "l646tryrfh",
     type: "PLACEHOLDER",
     placeholder: normalExamplePlaceholder,
     optional: false,
-    stringBefore: '"event_id":"',
-    stringAfter: '",',
+  },
+  {
+    id: "z50u2wrgobs",
+    type: "TEXT",
+    value: '",',
+  },
+  {
+    id: "z50u4wrgobs",
+    type: "TEXT",
+    value: '"event_source_url":"',
   },
   {
     id: "hh4nhrar36u",
     type: "PLACEHOLDER",
     placeholder: normalExamplePlaceholder,
     optional: false,
-    stringBefore: '"event_source_url":"',
-    stringAfter: '",',
+  },
+  {
+    id: "550u4wrgobs",
+    type: "TEXT",
+    value: '","action_source":"',
   },
   {
     id: "1tb48rorxre",
     type: "PLACEHOLDER",
     placeholder: normalExamplePlaceholder,
     optional: false,
-    stringBefore: '"action_source":"',
-    stringAfter: '",',
+  },
+  {
+    id: "950u4wrgobs",
+    type: "TEXT",
+    value: '",',
   },
   {
     id: "ox3uh789vp",
@@ -288,8 +307,6 @@ export const metaPixelPayload: PixelBuilderElement[] = [
         id: "jlv5t4upc4",
         type: "FUNCTION",
         fn: exampleFunction,
-        stringBefore: '"client_ip_address":"',
-        stringAfter: '",',
         children: [
           {
             id: "2pxc58qy73y",
@@ -306,8 +323,6 @@ export const metaPixelPayload: PixelBuilderElement[] = [
         id: "edv27xb1lee",
         type: "FUNCTION",
         fn: exampleFunction,
-        stringBefore: '"client_user_agent":"',
-        stringAfter: '"',
         children: [
           {
             id: "pylh40pc4xc",

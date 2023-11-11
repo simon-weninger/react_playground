@@ -11,30 +11,18 @@ type InputProps = {
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   style?: React.CSSProperties;
   helperText?: string;
-} & React.DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
->;
+} & React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 /**
  * The Input component
  * @param {InputProps} props
  * @return {ReactElement}
  */
 const Input = (
-  {
-    name,
-    value,
-    label,
-    error = false,
-    onChange,
-    onBlur,
-    helperText,
-    ...inputProps
-  }: InputProps,
+  { name, value, label, error = false, onChange, onBlur, helperText, ...inputProps }: InputProps,
   ref?: LegacyRef<HTMLInputElement>
 ): JSX.Element => {
-  const borderColor = error ? "border-red-500" : "border-slate-800";
-  const shadowColor = error ? "focus:shadow-red-100" : "focus:shadow-slate-200";
+  const borderColor = error ? "border-red-500" : "border-gray-800";
+  const shadowColor = error ? "focus:shadow-red-100" : "focus:shadow-gray-200";
   return (
     <FormControl label={label} error={error} helperText={helperText}>
       <input

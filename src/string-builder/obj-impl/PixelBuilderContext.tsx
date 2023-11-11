@@ -147,7 +147,12 @@ function elementsReducer(context: PixelBuilderContext, action: Action) {
         const newElement = findElement(action.elementId, prevElements);
 
         if (!(newElement?.type === "CONTENT_BLOCK") && !(oldElement?.type === "CONTENT_BLOCK")) {
-          if (!(newElement?.type === "TEXT") && !(oldElement?.type === "TEXT")) {
+          if (
+            !(newElement?.type === "TEXT") &&
+            !(oldElement?.type === "TEXT") &&
+            !(newElement?.type === "FUNCTION") &&
+            !(oldElement?.type === "FUNCTION")
+          ) {
             if (
               oldElement?.stringBefore === newElement?.stringBefore &&
               oldElement?.stringAfter === newElement?.stringAfter

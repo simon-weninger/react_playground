@@ -17,13 +17,7 @@ interface FunctionStringBuilderElementProps {
  */
 const FunctionStringBuilderElement = ({ element, disabled }: FunctionStringBuilderElementProps): JSX.Element => {
   return (
-    <div className="flex flex-wrap gap-y-2 items-center px-2 rounded bg-fuchsia-50 ">
-      <ContentEditable
-        elementId={element.id}
-        className="pr-1"
-        text={element.stringBefore}
-        onChange={(value: string) => (element.stringBefore = value)}
-      />
+    <div>
       <div className="flex flex-wrap gap-y-2 items-center py-1 px-2 rounded bg-fuchsia-100 border border-fuchsia-400">
         <VariableIcon className="h-4 mr-2 text-fuchsia-900" />
         <span className="text-fuchsia-900">{element.fn.name}</span>
@@ -35,12 +29,6 @@ const FunctionStringBuilderElement = ({ element, disabled }: FunctionStringBuild
         ))}
         <DropZone elementId={element.childrenId} />
       </div>
-      <ContentEditable
-        elementId={element.id}
-        className="pl-1"
-        text={element.stringAfter}
-        onChange={(value: string) => (element.stringAfter = value)}
-      />
       {!disabled && (
         <ContextMenu element={element}>
           <div>TODO</div>

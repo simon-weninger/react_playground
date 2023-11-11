@@ -24,7 +24,10 @@ const ContentBlockStringBuilderElement = ({
   const [contentBlockName, setContentBlockName] = useState(element.label);
 
   return (
-    <div className="p-2 bg-gray-100 border border-gray-300 rounded " style={{ backgroundColor: color }}>
+    <div
+      className="px-2 py-1 bg-gray-50/70 border border-gray-400/20 rounded ring-1 ring-gray-50/50"
+      style={{ backgroundColor: color }}
+    >
       <div className="flex items-center min-h-[24px]">
         <span className="text-gray-600 text-xs">{contentBlockName}</span>
         <button

@@ -40,12 +40,10 @@ const PixelBuilderToolBar = ({ pixelBuilderId }: PixelBuilderToolBarProps): JSX.
         e.preventDefault();
         dispatch({ type: "duplicate", elements: selected });
       }
-      if (e.ctrlKey && e.key === "c") {
-        e.preventDefault();
+      if (e.ctrlKey && e.key === "c" && selected.length > 0) {
         dispatch({ type: "copy", elements: selected });
       }
-      if (e.ctrlKey && e.key === "v") {
-        e.preventDefault();
+      if (e.ctrlKey && e.key === "v" && selected.length > 0) {
         handlePaste();
       }
     }

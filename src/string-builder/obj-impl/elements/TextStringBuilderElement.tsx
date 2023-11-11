@@ -20,7 +20,7 @@ const TextStringBuilderElement = ({ element, disabled = false }: TextStringBuild
   const [color, setColor] = useState(element.color);
 
   return (
-    <div ref={divRef} className="p-1 flex rounded bg-slate-50 border border-slate-200">
+    <div ref={divRef} className="px-1 flex rounded bg-white ring-1 ring-gray-100">
       <ContentEditable
         elementId={element.id}
         style={{ color }}
