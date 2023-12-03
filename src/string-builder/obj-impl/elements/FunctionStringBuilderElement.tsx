@@ -18,7 +18,7 @@ interface FunctionStringBuilderElementProps {
 const FunctionStringBuilderElement = ({ element, disabled }: FunctionStringBuilderElementProps): JSX.Element => {
   return (
     <div>
-      <div className="flex flex-wrap gap-y-2 items-center py-1 px-2 rounded bg-fuchsia-100 border border-fuchsia-400">
+      <div className="flex flex-wrap gap-y-2 items-center py-1 px-2 rounded bg-fuchsia-50 border border-fuchsia-300">
         <VariableIcon className="h-4 mr-2 text-fuchsia-900" />
         <span className="text-fuchsia-900">{element.fn.name}</span>
         {element.children.map((element) => (

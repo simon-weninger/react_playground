@@ -33,18 +33,11 @@ export const createPlaceholderElement = (
   };
 };
 
-export const createFunctionElement = (
-  fn: JentisFunction,
-  stringBefore: string,
-  stringAfter: string,
-  children: PixelBuilderElement[]
-): PixelBuilderFunction => {
+export const createFunctionElement = (fn: JentisFunction, children: PixelBuilderElement[]): PixelBuilderFunction => {
   return {
     id: generateId(),
     type: "FUNCTION",
     fn,
-    stringBefore,
-    stringAfter,
     children,
     childrenId: generateId(),
   };

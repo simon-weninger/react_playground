@@ -43,7 +43,7 @@ const PixelBuilder = ({ id }: PixelBuilderProps): JSX.Element => {
     }
   }, []);
 
-  const isCurrentContainerCSS = activeBuilderId === id ? "ring-sky-600" : " ring-gray-100";
+  const isCurrentContainerCSS = activeBuilderId === id ? "ring-blue-400" : " ring-gray-100";
 
   return (
     <>

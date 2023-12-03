@@ -31,14 +31,16 @@ const PlaceholderStringBuilderElement = ({
   const { dispatch } = usePixelBuilder();
   const [placeholderWasChanged, setPlaceholderWasChanged] = useState(false);
 
-  let placeholderColorStyles = placeholderWasChanged ? "bg-sky-600 text-white" : "bg-sky-200 text-sky-900";
+  let placeholderColorStyles = placeholderWasChanged
+    ? "bg-blue-600 text-white"
+    : element.optional
+    ? "bg-blue-50/70 border-l border-r border-blue-200 rounded-full"
+    : "bg-blue-50/70 border border-blue-200 text-blue-950";
 
   let optionalBorderStyle = "";
   if (element.optional) {
-    optionalBorderStyle = "border-l-2 border-r-2 rounded-xl ";
-    optionalBorderStyle += placeholderWasChanged
-      ? "border-l-sky-600 border-r-sky-600"
-      : "border-l-sky-300 border-r-sky-300";
+    optionalBorderStyle = "border rounded-full ";
+    optionalBorderStyle += placeholderWasChanged ? "border-l-blue-600 border-r-blue-600" : "border-blue-200";
   }
   let wrapperColorStyles = "bg-white ring-1 ring-gray-100 " + optionalBorderStyle;
 
@@ -59,7 +61,9 @@ const PlaceholderStringBuilderElement = ({
   };
 
   return (
-    <div className={"flex items-center px-1 rounded text-sky-950 transition-colors duration-300 " + wrapperColorStyles}>
+    <div
+      className={"flex items-center px-1 rounded text-blue-950 transition-colors duration-300 " + wrapperColorStyles}
+    >
       <ContentEditable
         elementId={element.id}
         className="pr-1"

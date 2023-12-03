@@ -15,7 +15,7 @@ const ContextMenuItem = ({ label, description, onClick, icon: Icon }: ContextMen
   return (
     <RadixContextMenu.Item
       onClick={onClick}
-      className="group text-[13px] leading-none text-sky-800 rounded-[3px] flex items-center h-[25px] px-[5px] relative select-none outline-none data-[disabled]:text-gray-300 data-[disabled]:pointer-events-none data-[highlighted]:bg-sky-900 data-[highlighted]:text-sky-50"
+      className="group text-[13px] leading-none text-slate-800 rounded-[3px] flex items-center h-[25px] px-[5px] relative select-none outline-none data-[disabled]:text-gray-300 data-[disabled]:pointer-events-none data-[highlighted]:bg-slate-700 data-[highlighted]:text-slate-50"
     >
       {Icon && <Icon className="h-4 mr-1" />}
       {label}
